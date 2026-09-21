@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# 运行时产物
+*.log
+*.log.*
+
+# 真实配置（含微信凭据），不要提交
+config.json
+*.local.json
+tools/config.json
+
+# AI 工作记忆：里面有目标机 IP、真实的 template_id、内网路径等信息，
+# 属于本机运维笔记而不是项目代码 —— 不进仓库。
+.workbuddy/

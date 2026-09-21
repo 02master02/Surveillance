@@ -1,0 +1,42 @@
+{
+  "_readme": [
+    "开发机专用配置：把 nvidia_smi 指向假脚本，在没有 NVIDIA 显卡的机器上联调整条链路。",
+    "日志写到本机临时目录，不碰 C:\\ProgramData，避免开发时就需要管理员权限。",
+    "本文件不含任何凭据，可以安全提交。真实凭据放 tools/config.local.json（已 gitignore）。",
+    "用法：python run_monitor.py --config tools/config.dev.json --once",
+    "",
+    "指标是 cuda_util（CUDA 引擎利用率 > 15%），与真机 config.json 保持一致。",
+    "假 smi 的进程 PID 是编造的，本机拿不到它们的引擎计数器，所以假脚本额外实现了",
+    "--query-cuda-activity，采集层检测到 smi 是 .py 就从这里取 CUDA 活动。",
+    "切换负载形状用环境变量：CUDA_MONITOR_FAKE_SCENARIO=normal|many|single|empty|evolve|wddm|fail"
+  ],
+  "thresholds": {
+    "metric": "cuda_util",
+    "cuda_util_percent": 15,
+    "min_memory_mb": 1000,
+    "cuda_only": true
+  },
+  "poll_interval_sec": 5,
+  "min_push_interval_sec": 10,
+  "notify_on_clear": true,
+  "gpus": null,
+  "nvidia_smi": "fake_nvidia_smi.py",
+  "command_timeout_sec": 15,
+  "self_alert_after_failures": 3,
+  "self_alert_cooldown_sec": 60,
+  "process_priority": "high",
+  "runtime": {
+    "log_file": "cuda-monitor.dev.log",
+    "log_max_bytes": 1048576,
+    "log_backup_count": 2
+  },
+  "wechat": {
+    "app_id": "",
+    "app_secret": "",
+    "template_id": "",
+    "to_users": [],
+    "proxy": "",
+    "timeout_sec": 8,
+    "process_slots": 5
+  }
+}
